@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "depart-pivot-client-side-solution",
+    "id": "7903d77a-1862-4552-a29f-b86e942b55d7",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "DepartPivot description"
+      },
+      "longDescription": {
+        "default": "DepartPivot description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "depart-pivot Feature",
+        "description": "The feature that activates elements of the depart-pivot solution.",
+        "id": "ef72f94c-4d08-4aa6-9b0f-92a57e7fa901",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/depart-pivot.sppkg"
+  }
+}

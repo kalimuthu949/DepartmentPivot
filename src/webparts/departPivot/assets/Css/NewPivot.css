@@ -1,0 +1,24 @@
+.clsPivot 
+{
+    border: 2px solid rgba(0,0,0,.15);
+}
+.clsPivot .MuiTreeItem-content {
+    background-color: #D8F4F7;
+    margin-bottom: 1px;
+    color: #03606a;
+}
+
+.clsPivot .MuiTreeItem-group .MuiTreeItem-content
+{
+    background-color: #fff;
+}
+
+.clsPivot .MuiTreeItem-group {
+    margin: 0;
+    padding: 0;
+    margin-left: 0px;
+}
+
+.clsPivot .MuiTreeItem-content .MuiTreeItem-label:hover {
+    background-color:#FFE49F;
+}

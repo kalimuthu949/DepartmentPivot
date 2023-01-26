@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "depart-pivot",
+    "libraryId": "7903d77a-1862-4552-a29f-b86e942b55d7",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "DepartPivot",
+    "solutionShortDescription": "DepartPivot description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
