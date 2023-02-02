@@ -19,7 +19,9 @@
     padding: 0;
     margin-left: 0px;
 }
-
+.clsPivot .MuiTreeItem-content{
+    width: unset !important;
+}
 
 /* .clsPivot .MuiTreeItem-content .MuiTreeItem-label:hover {
     background-color: #FFE49F;
@@ -31,4 +33,16 @@
 
 .MuiTreeItem-root.Mui-selected>.MuiTreeItem-content .MuiTreeItem-label {
     background-color: unset !important;
+}
+.spinnerBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #03606a66;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

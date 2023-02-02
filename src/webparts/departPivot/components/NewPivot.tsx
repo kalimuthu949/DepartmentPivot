@@ -5,6 +5,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 import { graph } from "@pnp/graph/presets/all";
 import "../assets/Css/NewPivot.css"
+import { Spinner, SpinnerSize } from '@fluentui/react/lib/Spinner';
 
 export default function NewPivot() 
 {
@@ -12,10 +13,12 @@ export default function NewPivot()
     const [peopleList, setPeopleList] = React.useState([]);
     const [department,setdepartment]= React.useState([]);
     const [designationdetails,setdesignationdetails]= React.useState([]);
+    const [loader,setloader]= React.useState(false);
   
     React.useEffect(function()
     {
-        getallusers();
+      setloader(true);  
+      getallusers();
     },[])
 
     function removeDuplicates(arr) {
@@ -51,7 +54,7 @@ export default function NewPivot()
               let designations=[];
               for(let i=0;i<depts.length;i++)
               {
-                designations.push({Dept:depts[i],Designations:[]})
+                designations.push({Dept:depts[i],UserCount:0,Designations:[]})
                 for(let j=0;j<users.length;j++)
                 {
                     if(users[j].department==depts[i])
@@ -68,11 +71,13 @@ export default function NewPivot()
                             {
   
                                 let index = designations[i].Designations.findIndex(o => o.Designation == users[j].jobTitle);
+                                designations[index].UserCount=designations[index].UserCount+1;
                                 designations[index].Designations[0].count=designations[index].Designations[0].count+1;
                             }
                             else
                             {
-                                designations[i].Designations.push({Designation:users[j].jobTitle,count:1});
+                              designations[i].UserCount=designations[i].UserCount+1;
+                              designations[i].Designations.push({Designation:users[j].jobTitle,count:1});
                             }
                         }
                         
@@ -84,20 +89,25 @@ export default function NewPivot()
               setdesignationdetails([...designations]);
               setdepartment([...depts]);
               setPeopleList([...users]);
+              setloader(false);
         
             }).catch(function (error) {
               console.log(error)
+              setloader(false);
             })
           }
   
     return (<div className='clsPivot'>
+      {loader?<div className="spinnerBackground"><Spinner className="clsSpinner" size={SpinnerSize.large} /></div>:<></>}
     <TreeView
       aria-label="file system navigator"
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
     >
-      {designationdetails.map(function(item,index){
-        return(<TreeItem nodeId={index.toString()} label={item.Dept}>
+      {designationdetails.map(function(item,index)
+      {
+        let count=item.Designations.length;
+        return(<TreeItem nodeId={index.toString()} label={item.Dept +" "+item.UserCount}>
             {item.Designations.map(function(item,index)
             {
                 let labelvalue=item.Designation+" ("+item.count+")";
