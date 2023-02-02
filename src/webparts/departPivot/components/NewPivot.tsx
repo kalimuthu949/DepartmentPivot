@@ -85,8 +85,14 @@ export default function NewPivot()
                 }
               }
 
-              console.log(designations);
-              setdesignationdetails([...designations]);
+            let sortedArray = designations.sort(function(a, b){
+                if(a.Dept < b.Dept) { return -1; }
+                if(a.Dept > b.Dept) { return 1; }
+                return 0;
+            });
+
+              console.log(sortedArray);
+              setdesignationdetails([...sortedArray]);
               setdepartment([...depts]);
               setPeopleList([...users]);
               setloader(false);
@@ -107,8 +113,13 @@ export default function NewPivot()
       {designationdetails.map(function(item,index)
       {
         let count=item.Designations.length;
+        let sortedArraydesignation = item.Designations.sort(function(a, b){
+          if(a.Designation < b.Designation) { return -1; }
+          if(a.Designation > b.Designation) { return 1; }
+          return 0;
+      });
         return(<TreeItem nodeId={index.toString()} label={item.Dept +" "+item.UserCount}>
-            {item.Designations.map(function(item,index)
+            {sortedArraydesignation.map(function(item,index)
             {
                 let labelvalue=item.Designation+" ("+item.count+")";
                 return(<TreeItem nodeId={designationdetails.length.toString()} label={labelvalue} />)
