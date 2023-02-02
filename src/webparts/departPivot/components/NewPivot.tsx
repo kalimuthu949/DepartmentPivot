@@ -28,7 +28,6 @@ export default function NewPivot()
 
     async function getallusers() {
             await graph.users.select("department,mail,id,displayName,jobTitle,mobilePhone").top(999).get().then(function (data) {
-              console.log(data);
               const users = [];
               let depts=[];
               for (let i = 0; i < data.length; i++) 
@@ -55,6 +54,7 @@ export default function NewPivot()
               for(let i=0;i<depts.length;i++)
               {
                 designations.push({Dept:depts[i],UserCount:0,Designations:[]})
+                
                 for(let j=0;j<users.length;j++)
                 {
                     if(users[j].department==depts[i])
@@ -71,8 +71,8 @@ export default function NewPivot()
                             {
   
                                 let index = designations[i].Designations.findIndex(o => o.Designation == users[j].jobTitle);
-                                designations[index].UserCount=designations[index].UserCount+1;
-                                designations[index].Designations[0].count=designations[index].Designations[0].count+1;
+                                designations[i].UserCount=designations[i].UserCount+1;
+                                designations[i].Designations[0].count=designations[i].Designations[0].count+1;
                             }
                             else
                             {
