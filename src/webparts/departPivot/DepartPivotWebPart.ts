@@ -3,7 +3,8 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneToggle
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -14,6 +15,7 @@ import { IDepartPivotProps } from './components/IDepartPivotProps';
 
 export interface IDepartPivotWebPartProps {
   description: string;
+  propertyToggle:boolean;
 }
 
 export default class DepartPivotWebPart extends BaseClientSideWebPart<IDepartPivotWebPartProps> {
@@ -32,6 +34,7 @@ export default class DepartPivotWebPart extends BaseClientSideWebPart<IDepartPiv
       DepartPivot,
       {
         description: this.properties.description,
+        propertyToggle:this.properties.propertyToggle,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
@@ -87,7 +90,10 @@ export default class DepartPivotWebPart extends BaseClientSideWebPart<IDepartPiv
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
-                })
+                }),
+                PropertyPaneToggle('propertyToggle', {
+                  label: 'External Users'
+                }),
               ]
             }
           ]

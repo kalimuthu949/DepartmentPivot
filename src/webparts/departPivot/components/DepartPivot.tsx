@@ -5,6 +5,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 import NewPivot from './NewPivot';
+import { MSGraphClient } from "@microsoft/sp-http";
 export default class DepartPivot extends React.Component<IDepartPivotProps, {}> {
   constructor(prop: IDepartPivotProps, state: {}) {
     super(prop);
@@ -25,7 +26,7 @@ export default class DepartPivot extends React.Component<IDepartPivotProps, {}> 
     } = this.props;
 
     return (
-    <NewPivot/>
+    <NewPivot context={this.props.context} propertyToggle={this.props.propertyToggle}/>
     );
   }
 }
