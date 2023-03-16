@@ -30,6 +30,8 @@ export default function NewPivot(props)
 
     function bindData(data)
     {
+      //let devDomain="chandrudemo.onmicrosoft.com";
+      let devDomain="hosthealthcare.onmicrosoft.com";
       const users = [];
       let depts=[];
       for (let i = 0; i < data.length; i++) 
@@ -38,7 +40,7 @@ export default function NewPivot(props)
         let userPrinName=data[i].userPrincipalName?data[i].userPrincipalName:"";
         if(!props.propertyToggle)
         {
-          if(userIdentity.toLowerCase()=="hosthealthcare.onmicrosoft.com" && !userPrinName.includes('#EXT#'))
+          if(userIdentity.toLowerCase()==devDomain&& !userPrinName.includes('#EXT#'))
           {
               users.push({
                 imageUrl: "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
@@ -53,7 +55,7 @@ export default function NewPivot(props)
               })
   
               if(data[i].department)
-              depts.push(data[i].department)
+              depts.push(data[i].department.trim())
           }
         }
         else
@@ -71,7 +73,7 @@ export default function NewPivot(props)
             })
 
             if(data[i].department)
-            depts.push(data[i].department)
+            depts.push(data[i].department.trim())
         }
         
       }
@@ -84,7 +86,8 @@ export default function NewPivot(props)
         
         for(let j=0;j<users.length;j++)
         {
-            if(users[j].department==depts[i])
+          if(users[j].department){  
+          if(users[j].department.trim()==depts[i].trim())
             {
                 if(users[j].jobTitle)
                 {
@@ -92,12 +95,12 @@ export default function NewPivot(props)
                     if(designations[i].Designations.length>0)
                     {
                         if(users[j].jobTitle)
-                        obj=designations[i].Designations.find(o => o.Designation == users[j].jobTitle);
+                        obj=designations[i].Designations.find(o => o.Designation.trim() == users[j].jobTitle.trim());
                     }
                     if(obj)
                     {
 
-                        let index = designations[i].Designations.findIndex(o => o.Designation == users[j].jobTitle);
+                        let index = designations[i].Designations.findIndex(o => o.Designation.trim() == users[j].jobTitle.trim());
                         designations[i].UserCount=designations[i].UserCount+1;
                         designations[i].Designations[0].count=designations[i].Designations[0].count+1;
                     }
@@ -108,7 +111,7 @@ export default function NewPivot(props)
                     }
                 }
                 
-            }
+            }}
         }
       }
 
