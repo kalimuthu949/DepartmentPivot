@@ -70,29 +70,19 @@ export default function NewPivot(props) {
   };
 
   function bindData(data) {
-    let devDomain = "chandrudemo.onmicrosoft.com";
+    //let devDomain = "chandrudemo.onmicrosoft.com";
     // let devDomain = "hosthealthcare.onmicrosoft.com";
     const users = [];
     let depts = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) 
+    {
+      
+      /*Changes start */
       // let userIdentity = data[i].identities[0].issuer;
       // let userPrinName = data[i].userPrincipalName
       //   ? data[i].userPrincipalName
       //   : "";
-      users.push({
-        imageUrl: "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
-        isValid: true,
-        Email: data[i].mail,
-        ID: data[i].id,
-        key: i,
-        text: data[i].displayName,
-        jobTitle: data[i].jobTitle,
-        // mobilePhone: data[i].mobilePhone,
-        // mobilePhone:
-        //   data[i].businessPhones.length > 0 ? data[i].businessPhones[0] : "",
-        department: data[i].department,
-      });
-      if (data[i].department) depts.push(data[i].department.trim());
+
       // if (!props.propertyToggle) {
       //   if (
       //     userIdentity.toLowerCase() == devDomain &&
@@ -129,6 +119,22 @@ export default function NewPivot(props) {
 
       //   if (data[i].department) depts.push(data[i].department.trim());
       // }
+      /* changes end */
+
+      users.push({
+        imageUrl: "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
+        isValid: true,
+        Email: data[i].mail,
+        ID: data[i].id,
+        key: i,
+        text: data[i].displayName,
+        jobTitle: data[i].jobTitle,
+        // mobilePhone: data[i].mobilePhone,
+        // mobilePhone:
+        //   data[i].businessPhones.length > 0 ? data[i].businessPhones[0] : "",
+        department: data[i].department,
+      });
+      if (data[i].department) depts.push(data[i].department.trim());
     }
 
     depts = removeDuplicates(depts);
@@ -167,16 +173,16 @@ export default function NewPivot(props) {
       }
     }
 
-    // let sortedArray = designations.sort(function (a, b) {
-    //   if (a.Dept < b.Dept) {
-    //     return -1;
-    //   }
-    //   if (a.Dept > b.Dept) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
-    let sortedArray = designations;
+    let sortedArray = designations.sort(function (a, b) {
+      if (a.Dept < b.Dept) {
+        return -1;
+      }
+      if (a.Dept > b.Dept) {
+        return 1;
+      }
+      return 0;
+    });
+    //let sortedArray = designations;
 
     console.log(sortedArray);
     setdesignationdetails([...sortedArray]);
