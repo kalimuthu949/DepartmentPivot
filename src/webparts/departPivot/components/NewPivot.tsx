@@ -10,6 +10,8 @@ import { Spinner, SpinnerSize } from "@fluentui/react/lib/Spinner";
 import { makeStyles } from "@material-ui/core/styles";
 let allUserData = [];
 
+import SPServices from "./SPServices";
+
 const useStyles = makeStyles({
   label: {
     backgroundColor: "#fff",
@@ -26,59 +28,107 @@ export default function NewPivot(props) {
 
   React.useEffect(function () {
     setloader(true);
-    getallusers();
+    getEmployeeDetails();
+    // getallusers();
   }, []);
 
   function removeDuplicates(arr) {
     return arr.filter((item, index) => arr.indexOf(item) === index);
   }
 
+  const getEmployeeDetails = () => {
+    SPServices.SPReadItems({
+      Listname: "EmployeeGroupDetails",
+      Select: "*,Manager/Title,Manager/Id,Manager/EMail",
+      Expand: "Manager",
+    })
+      .then((data: any) => {
+        let employeeArr = [];
+        for (const item of data) {
+          employeeArr.push({
+            mail: item.Email,
+            id: item.Title,
+            displayName: [item.FirstName, item.LastName].join(" "),
+            userPrincipalName: item.UserPrincipalName,
+            jobTitle: item.JobTitle,
+            givenName: item.FirstName,
+            surname: item.LastName,
+            businessPhones: item.PhoneNumber ? item.PhoneNumber.split(",") : [],
+            department: item.Department,
+            officeLocation: item.Zone,
+            manager: item.ManagerId ? item.Manager.Title : "",
+          });
+        }
+
+        // employeeArr.sort((a, b) => sortFunction(a, b, "displayName"));
+        bindData(employeeArr);
+      })
+      .catch((error) => {
+        console.log(error);
+        setloader(false);
+      });
+  };
+
   function bindData(data) {
-    //let devDomain="chandrudemo.onmicrosoft.com";
-    let devDomain = "hosthealthcare.onmicrosoft.com";
+    let devDomain = "chandrudemo.onmicrosoft.com";
+    // let devDomain = "hosthealthcare.onmicrosoft.com";
     const users = [];
     let depts = [];
     for (let i = 0; i < data.length; i++) {
-      let userIdentity = data[i].identities[0].issuer;
-      let userPrinName = data[i].userPrincipalName
-        ? data[i].userPrincipalName
-        : "";
-      if (!props.propertyToggle) {
-        if (
-          userIdentity.toLowerCase() == devDomain &&
-          !userPrinName.includes("#EXT#")
-        ) {
-          users.push({
-            imageUrl:
-              "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
-            isValid: true,
-            Email: data[i].mail,
-            ID: data[i].id,
-            key: i,
-            text: data[i].displayName,
-            jobTitle: data[i].jobTitle,
-            mobilePhone: data[i].mobilePhone,
-            department: data[i].department,
-          });
+      // let userIdentity = data[i].identities[0].issuer;
+      // let userPrinName = data[i].userPrincipalName
+      //   ? data[i].userPrincipalName
+      //   : "";
+      users.push({
+        imageUrl: "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
+        isValid: true,
+        Email: data[i].mail,
+        ID: data[i].id,
+        key: i,
+        text: data[i].displayName,
+        jobTitle: data[i].jobTitle,
+        // mobilePhone: data[i].mobilePhone,
+        // mobilePhone:
+        //   data[i].businessPhones.length > 0 ? data[i].businessPhones[0] : "",
+        department: data[i].department,
+      });
+      if (data[i].department) depts.push(data[i].department.trim());
+      // if (!props.propertyToggle) {
+      //   if (
+      //     userIdentity.toLowerCase() == devDomain &&
+      //     !userPrinName.includes("#EXT#")
+      //   ) {
+      //     users.push({
+      //       imageUrl:
+      //         "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
+      //       isValid: true,
+      //       Email: data[i].mail,
+      //       ID: data[i].id,
+      //       key: i,
+      //       text: data[i].displayName,
+      //       jobTitle: data[i].jobTitle,
+      //       mobilePhone: data[i].mobilePhone,
+      //       department: data[i].department,
+      //     });
 
-          if (data[i].department) depts.push(data[i].department.trim());
-        }
-      } else {
-        users.push({
-          imageUrl:
-            "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
-          isValid: true,
-          Email: data[i].mail,
-          ID: data[i].id,
-          key: i,
-          text: data[i].displayName,
-          jobTitle: data[i].jobTitle,
-          mobilePhone: data[i].mobilePhone,
-          department: data[i].department,
-        });
+      //     if (data[i].department) depts.push(data[i].department.trim());
+      //   }
+      // } else {
+      //   users.push({
+      //     imageUrl:
+      //       "/_layouts/15/userphoto.aspx?size=L&username=" + data[i].mail,
+      //     isValid: true,
+      //     Email: data[i].mail,
+      //     ID: data[i].id,
+      //     key: i,
+      //     text: data[i].displayName,
+      //     jobTitle: data[i].jobTitle,
+      //     mobilePhone: data[i].mobilePhone,
+      //     department: data[i].department,
+      //   });
 
-        if (data[i].department) depts.push(data[i].department.trim());
-      }
+      //   if (data[i].department) depts.push(data[i].department.trim());
+      // }
     }
 
     depts = removeDuplicates(depts);
@@ -117,15 +167,16 @@ export default function NewPivot(props) {
       }
     }
 
-    let sortedArray = designations.sort(function (a, b) {
-      if (a.Dept < b.Dept) {
-        return -1;
-      }
-      if (a.Dept > b.Dept) {
-        return 1;
-      }
-      return 0;
-    });
+    // let sortedArray = designations.sort(function (a, b) {
+    //   if (a.Dept < b.Dept) {
+    //     return -1;
+    //   }
+    //   if (a.Dept > b.Dept) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // });
+    let sortedArray = designations;
 
     console.log(sortedArray);
     setdesignationdetails([...sortedArray]);
